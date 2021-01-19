@@ -1,12 +1,26 @@
 import React, { Component } from 'react';
 import { Button,Card,CardDeck,Modal,Table } from 'react-bootstrap';
+import Header from './Header'
 import '../index.css'; 
 
 class List extends Component {
-    state = {
-        count: 0,
-        show:false,
-    };
+    // constructor(props) {
+    //     super(props)
+
+
+    //     this.state = {
+    //         count: 0,
+    //         show:false,
+    //     };
+
+    //     this.getBadgeClasses = this.getBadgeClasses.bind(this);
+    // }
+
+        state = {
+            count: 0,
+            show:false,
+        };
+
     PRODUCTS = [
         {id:1,handle: 'ocean-blue-shirt', stocked: false, title: 'Ocean Blue Shirt	',tags:"men",src:'https://burst.shopifycdn.com/photos/young-man-in-bright-fashion_925x.jpg'},
         {id:2,handle: 'classic-varsity-top', stocked: false, title: 'Classic Varsity Top',tags:"men",src:'https://burst.shopifycdn.com/photos/casual-fashion-woman_925x.jpg'},
@@ -35,19 +49,19 @@ class List extends Component {
     render() { 
 
         return (
-            <React.Fragment>
-            {this.header()}
+            <>
+            <Header PRODUCTS={this.PRODUCTS} check={this.check} state={this.state} getBadgeClasses={this.getBadgeClasses} handleModal={this.handleModal} formatCounter={this.formatCounter}/>
             <h1 className="this">Header</h1>
             <CardDeck className="m-2 group cardDeck">
             <ul className="list-group list-group-horizontal align-items-stretch flex-wrap">
                 {this.renderTags()}
             </ul>
             </CardDeck>
-            </React.Fragment>
+            </>
         );
     }
 
-    handleModal(){
+    handleModal = () =>{
         this.setState({show:!this.state.show})
     }
 
@@ -62,37 +76,6 @@ class List extends Component {
                     </tr>
                 )
         }
-    }
-
-
-    header(){
-
-        return (
-                <div className="header">
-            <span  className={this.getBadgeClasses()}>Card :  {this.formatCounter()}</span>
-            <span className="cartE" onClick={ () => this.handleModal() }>&#128722;</span>
-            <Modal show={this.state.show}>
-            <Modal.Header>Cart</Modal.Header>
-            <Modal.Body>
-            <Table striped bordered hover>
-            <thead>
-                <tr>
-                    <th>Image</th>
-                    <th>Name</th>
-                </tr>
-                </thead>
-                <tbody>
-                {this.PRODUCTS.map((item) =>
-                this.check(item))}
-                </tbody>
-            </Table>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button onClick={ () => this.handleModal() } >Close Modal</Button>
-            </Modal.Footer>
-            </Modal>
-        </div>
-        );
     }
 
 
@@ -118,13 +101,14 @@ class List extends Component {
             </li>
           )
     }
-    getBadgeClasses() {
+    getBadgeClasses = () => {
+        console.log(this)
         let classes = "badge m-3 badge-";
         classes += this.state.count == 0 ? "warning" : "primary";
         return classes;
     }
 
-    formatCounter (){
+    formatCounter = () => {
         const {count} = this.state.count;
         return count == 0 ? "Zero" : this.state.count;
     }
